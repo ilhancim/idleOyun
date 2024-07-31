@@ -1,3 +1,80 @@
+def giris():
+    while True:
+
+        secim = int(input(f" 1-Giris\n 2-Kayit Ol\n 3-Cikis\n>-<\n "))
+        print(">-<")
+
+        if secim == 1:
+            oku = open("Oyuncular.txt", "r")
+            oyuncular = []
+            for oyuncu in oku:
+                oyuncular.append(oyuncu)
+            oku.close()
+
+            kullaniciAdi = input("kullanici adi: ")
+            sifre = input("sifre: ")
+
+            for oyuncu in oyuncular:
+                if kullaniciAdi == oyuncu.split("/")[0].split()[0]:
+                    if sifre == oyuncu.split("/")[0].split()[1]:
+                        print(f"{kullaniciAdi}! giris basarili menüye aktarılıyorsunuz...")
+                        para, artis, carpan, fiyat1, fiyat2, stok1, stok2 = oyuncu.split("/")[1].split()
+                        menu(kullaniciAdi, sifre, int(para), int(artis), int(carpan), int(fiyat1), int(fiyat2), int(stok1), int(stok2))
+                        break
+            else:
+                print("Kullanici adi ve/veya sifre yanlis giris ekranına yönlendiriliyorsunuz...")
+                continue
+
+        elif secim == 2:
+            oku = open("Oyuncular.txt", "r")
+            yaz = open("Oyuncular.txt", "a")
+            oyuncular = []
+            for oyuncu in oku:
+                oyuncular.append(oyuncu)
+            oku.close()
+
+            while_continue = False
+            kullaniciAdi = input("kullanici adi: ")
+            for oyuncu in oyuncular:
+                if kullaniciAdi == oyuncu.split("/")[0].split()[0]:
+                    print("kullanici adi mevcut lütfen baska bir kullanici adi seciniz giris ekranına yönlendiriliyorsunuz...")
+                    while_continue = True
+                    continue
+            if while_continue:
+                continue
+            sifre = input("sifre: ")
+            yaz.write(f"{kullaniciAdi} {sifre}/0 10 1 100 200 10 10")
+            yaz.close()
+
+            print("kullanici adi ve sifre essiz! Kaydiniz basarili giris ekranina yönlendiriliyorsunuz...")
+            continue
+
+        elif secim==3:
+            print("Oyun kapaniyor...")
+            break
+
+        else:
+            print("Gecersiz secim...")
+
+def oyuncuGuncelle(kullaniciAdi, sifre, para, artis, carpan, fiyat1, fiyat2, stok1, stok2):
+    oku = open("Oyuncular.txt","r")
+    oyuncular = []
+    for oyuncu in oku:
+        oyuncular.append(oyuncu)
+    oku.close
+
+    yaz = open("Oyuncular.txt", "w")
+    yaz.write("")
+    yaz.close()
+
+    ekle = open("Oyuncular.txt", "a")
+    for oyuncu in oyuncular:
+        if kullaniciAdi != oyuncu.split("/")[0].split()[0]:
+            ekle.write(oyuncu)
+
+    ekle.write(f"{kullaniciAdi} {sifre}/{para} {artis} {carpan} {fiyat1} {fiyat2} {stok1} {stok2}")
+    ekle.close()
+
 def market(para, artis, carpan, fiyat1, fiyat2, stok1, stok2):
     while True:
         print(f"para = {para}")
@@ -64,17 +141,10 @@ def tikla(para, artis, carpan):
     para += artis*carpan
     return int(para)
 
-def basla():
-    para = 0
-    artis = 10
-    carpan = 1
-    fiyat1 = 100
-    fiyat2 = 200
-    stok1 = 10
-    stok2 = 10
+def basla(kullaniciAdi, sifre, para, artis, carpan, fiyat1, fiyat2, stok1, stok2):
     while True:
-        print(f"para = {para}")
-        secim = int(input(" 1-Tikla\n 2-Market\n>-<\n "))
+        print(f"para = {para}              /{kullaniciAdi}")
+        secim = int(input(" 1-Tikla\n 2-Market\n 3-Kayit et\n 4-Cikis\n>-<\n "))
         print(">-<")
         if secim==1:
             para = tikla(para, artis, carpan)
@@ -82,19 +152,26 @@ def basla():
         elif secim==2:
             para, artis, carpan, fiyat1, fiyat2, stok1, stok2 = market(para, artis, carpan, fiyat1, fiyat2, stok1, stok2)
 
+        elif secim==3:
+            oyuncuGuncelle(kullaniciAdi, sifre, para, artis, carpan, fiyat1, fiyat2, stok1, stok2)
+
+        elif secim==4:
+            oyuncuGuncelle(kullaniciAdi, sifre, para, artis, carpan, fiyat1, fiyat2, stok1, stok2)
+            print("Hesaptan cikiliyor...")
+            break
         else:
             print("Gecersiz secim.")
 
 def nasilOynanir():
     print("Yakinda!")
 
-def menu():
+def menu(kullaniciAdi, sifre, para, artis, carpan, fiyat1, fiyat2, stok1, stok2):
     print("oyun.")
     secim = int(input(" 1-Basla\n 2-Nasıl Oynanir\n 3-Cik\n>-<\n "))
     print(">-<")
     while True:
         if secim == 1:
-            basla()
+            basla(kullaniciAdi, sifre, para, artis, carpan, fiyat1, fiyat2, stok1, stok2)
             break
 
         elif secim == 2:
@@ -110,7 +187,7 @@ def menu():
             print(">-<")
 
 def main():
-    menu()
+    giris()
 
 if __name__ == "__main__":
     main()
