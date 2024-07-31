@@ -18,7 +18,7 @@ def giris():
                     if sifre == oyuncu.split("/")[0].split()[1]:
                         print(f"{kullaniciAdi}! giris basarili menüye aktarılıyorsunuz...")
                         para, artis, carpan, fiyat1, fiyat2, stok1, stok2 = oyuncu.split("/")[1].split()
-                        basla(kullaniciAdi, sifre, int(para), int(artis), int(carpan), int(fiyat1), int(fiyat2), int(stok1), int(stok2))
+                        basla(kullaniciAdi, sifre, int(para), int(artis), float(carpan), int(fiyat1), int(fiyat2), int(stok1), int(stok2))
                         break
             else:
                 print("Kullanici adi ve/veya sifre yanlis giris ekranına yönlendiriliyorsunuz...")
@@ -113,6 +113,7 @@ def market(para, artis, carpan, fiyat1, fiyat2, stok1, stok2):
         elif secim == 2:
             if para >= fiyat2 and stok2 >= 1:
                 carpan += 0.1
+                carpan == float(f"{carpan:.1f}")
                 stok2 -= 1
                 para -= fiyat2
                 fiyat2 = int(fiyat2 * 2)
