@@ -1,166 +1,142 @@
-def giris():
-    while True:
-        secim = int(input(f" 1-Kullanici girisi\n 2-Kayit Ol\n 3-Cikis\n>-<\n "))
-        print(">-<")
+from PyQt5.QtWidgets import *
+import fonksiyonlar
+import panel
+import panel1
+import panel2
+import panel3
+import panel4
 
-        if secim == 1:
-            oku = open("Oyuncular.txt", "r")
-            oyuncular = []
-            for oyuncu in oku:
-                oyuncular.append(oyuncu)
-            oku.close()
+class p(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.p = panel.Ui_MainWindow()
+        self.p.setupUi(self)
+        self.p1 = p1()
+        self.p2 = p2()
+        self.p.pushButton.clicked.connect(self.buton)
+        self.p.pushButton_2.clicked.connect(self.buton2)
+        self.p.pushButton_3.clicked.connect(self.buton3)
 
-            kullaniciAdi = input("kullanici adi: ")
-            sifre = input("sifre: ")
+    def buton(self):
+        self.close()
+        self.p1.show()
 
-            for oyuncu in oyuncular:
-                if kullaniciAdi == oyuncu.split("/")[0].split()[0]:
-                    if sifre == oyuncu.split("/")[0].split()[1]:
-                        print(f"{kullaniciAdi}! giris basarili menüye aktarılıyorsunuz...")
-                        para, artis, carpan, fiyat1, fiyat2, stok1, stok2 = oyuncu.split("/")[1].split()
-                        basla(kullaniciAdi, sifre, int(para), int(artis), float(carpan), int(fiyat1), int(fiyat2), int(stok1), int(stok2))
-                        break
-            else:
-                print("Kullanici adi ve/veya sifre yanlis giris ekranına yönlendiriliyorsunuz...")
-                continue
+    def buton2(self):
+        self.close()
+        self.p2.show()
 
-        elif secim == 2:
-            oku = open("Oyuncular.txt", "r")
-            yaz = open("Oyuncular.txt", "a")
-            oyuncular = []
-            for oyuncu in oku:
-                oyuncular.append(oyuncu)
-            oku.close()
+    def buton3(self):
+        self.close()
 
-            while_continue = False
-            kullaniciAdi = input("kullanici adi: ")
-            for oyuncu in oyuncular:
-                if kullaniciAdi == oyuncu.split("/")[0].split()[0]:
-                    print("kullanici adi mevcut lütfen baska bir kullanici adi seciniz giris ekranına yönlendiriliyorsunuz...")
-                    while_continue = True
-                    continue
-            if while_continue:
-                continue
-            sifre = input("sifre: ")
-            yaz.write(f"{kullaniciAdi} {sifre}/0 10 1 100 200 10 10")
-            yaz.close()
+class p1(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.p1 = panel1.Ui_MainWindow()
+        self.p1.setupUi(self)
+        self.p3 = p3()
+        self.p1.pushButton.clicked.connect(self.buton)
+        self.p1.pushButton_2.clicked.connect(self.anaEkran)
+        self.deneme = 1
 
-            print("kullanici adi ve sifre essiz! Kaydiniz basarili giris ekranina yönlendiriliyorsunuz...")
-            continue
-
-        elif secim==3:
-            print("Oyun kapaniyor...")
-            break
+    def buton(self):
+        self.kullaniciAdi = self.p1.lineEdit.text()
+        self.sifre = self.p1.lineEdit_2.text()
+        girisDurum, self.kullaniciAdi, self.sifre, self.para, self.artis, self.carpan, self.fiyat1, self.fiyat2, self.stok1, self.stok2 = fonksiyonlar.giris(self.kullaniciAdi, self.sifre)
+        if girisDurum == 0:
+            self.p1.label_3.setText(f"Kullanici adi ve/veya sifre yanlis. <{self.deneme}. deneme>")
+            self.deneme += 1
 
         else:
-            print("Gecersiz secim...")
+            self.close()
+            self.p3.show()
 
-def oyuncuGuncelle(kullaniciAdi, sifre, para, artis, carpan, fiyat1, fiyat2, stok1, stok2):
-    oku = open("Oyuncular.txt","r")
-    oyuncular = []
-    for oyuncu in oku:
-        oyuncular.append(oyuncu)
-    oku.close()
+    def anaEkran(self):
+        self.close()
+        self.p = p()
+        self.p.show()
 
-    yaz = open("Oyuncular.txt", "w")
-    yaz.write("")
-    yaz.close()
+class p2(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.p2 = panel2.Ui_MainWindow()
+        self.p2.setupUi(self)
+        self.p2.pushButton.clicked.connect(self.buton)
+        self.p2.pushButton_2.clicked.connect(self.anaEkran)
+        self.deneme = 1
 
-    ekle = open("Oyuncular.txt", "a")
-    for oyuncu in oyuncular:
-        if kullaniciAdi != oyuncu.split("/")[0].split()[0]:
-            ekle.write(oyuncu)
-
-    ekle.write(f"{kullaniciAdi} {sifre}/{para} {artis} {carpan} {fiyat1} {fiyat2} {stok1} {stok2}")
-    ekle.close()
-
-def market(para, artis, carpan, fiyat1, fiyat2, stok1, stok2):
-    while True:
-        print(f"para = {para}")
-        if stok1 >= 2:
-            print(f" 1-artis(+1) >{fiyat1} para< ^{11-stok1}/10^")
+    def buton(self):
+        self.kullaniciAdi = self.p2.lineEdit.text()
+        self.sifre = self.p2.lineEdit_2.text()
+        kayitDurum = fonksiyonlar.kayit(self.kullaniciAdi, self.sifre)
+        if kayitDurum == 0:
+            self.p2.label_3.setText(f"Kullanıcı adı bulunuyor lütfen başka bir kullanıcı adı seçiniz. <{self.deneme}. deneme>")
+            self.deneme += 1
 
         else:
-            print(f" 1-artis x{11 - stok1}/10x")
+            self.p2.label_3.setText("Kayıt başarılı!")
 
-        if stok2 >= 2:
-            print(f" 2-carpan(+0.1) >{fiyat2} para< ^{11-stok2}/10^")
+    def anaEkran(self):
+        self.close()
+        self.p = p()
+        self.p.show()
 
-        else:
-            print(f" 2-carpan x{11 - stok2}/10x")
+class p3(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.p3 = panel3.Ui_MainWindow()
+        self.p3.setupUi(self)
+        self.p4 = p4()
+        self.p3.pushButton.clicked.connect(self.tikla)
+        self.p3.pushButton_2.clicked.connect(self.market)
+        self.p3.pushButton_3.clicked.connect(self.anaEkran)
 
-        secim = int(input(" 3-Cik\n>-<\n "))
-        print(">-<")
+    def tikla(self):
+        self.close()
+        self.p = p()
+        self.p.show()
 
-        if secim == 1:
-            if para >= fiyat1 and stok1 >= 1:
-                artis += 10
-                stok1 -= 1
-                para -= fiyat1
-                fiyat1 = int(fiyat1 * 1.5)
+    def market(self):
+        self.close()
+        self.p = p()
+        self.p.show()
 
-                print(f"******\nartis {artis} ye yukseldi!\n******")
-                continue
+    def anaEkran(self):
+        self.close()
+        self.p = p()
+        self.p.show()
 
-            elif stok1 == 1:
-                print("******\nBu esyanin stogu bitti!\n******")
-                continue
+class p4(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.p4 = panel4.Ui_MainWindow()
+        self.p4.setupUi(self)
+        self.p4.pushButton.clicked.connect(self.buton)
+        self.p4.pushButton_2.clicked.connect(self.buton2)
+        self.p4.pushButton_3.clicked.connect(self.buton3)
+        self.p4.pushButton_4.clicked.connect(self.anaEkran)
 
-            else:
-                print("******\nPara yetersiz!\n******")
-                continue
+    def buton(self):
+        self.close()
+        self.p = p()
+        self.p.show()
 
-        elif secim == 2:
-            if para >= fiyat2 and stok2 >= 1:
-                carpan += 0.1
-                carpan == float(f"{carpan:.1f}")
-                stok2 -= 1
-                para -= fiyat2
-                fiyat2 = int(fiyat2 * 2)
+    def buton2(self):
+        self.close()
+        self.p = p()
+        self.p.show()
 
-                print(f"******\ncarpan {carpan} ye yukseldi!\n******")
-                continue
+    def buton3(self):
+        self.close()
+        self.p = p()
+        self.p.show()
 
-            elif stok1 == 1:
-                print("******\nBu esyanin stogu bitti!\n******")
-                continue
+    def anaEkran(self):
+        self.close()
+        self.p = p()
+        self.p.show()
 
-            else:
-                print("******\nPara yetersiz!\n******")
-                continue
 
-        elif secim == 3:
-            print("Marketten cikiliyor...")
-
-        else:
-            print("Gecersiz secim!")
-
-        return para, artis, carpan, fiyat1, fiyat2, stok1, stok2
-
-def tikla(para, artis, carpan):
-    para += artis*carpan
-    return int(para)
-
-def basla(kullaniciAdi, sifre, para, artis, carpan, fiyat1, fiyat2, stok1, stok2):
-    while True:
-        print(f"para = {para}              /{kullaniciAdi}")
-        secim = int(input(" 1-Tikla\n 2-Market\n 3-Cikis\n>-<\n "))
-        print(">-<")
-        oyuncuGuncelle(kullaniciAdi, sifre, para, artis, carpan, fiyat1, fiyat2, stok1, stok2)
-        if secim==1:
-            para = tikla(para, artis, carpan)
-
-        elif secim==2:
-            para, artis, carpan, fiyat1, fiyat2, stok1, stok2 = market(para, artis, carpan, fiyat1, fiyat2, stok1, stok2)
-
-        elif secim==3:
-            print("Hesaptan cikiliyor...")
-            break
-        else:
-            print("Gecersiz secim.")
-
-def main():
-    giris()
-
-if __name__ == "__main__":
-    main()
+app = QApplication([])
+pencere = p()
+pencere.show()
+app.exec_()
