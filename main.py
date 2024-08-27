@@ -170,21 +170,48 @@ class p4(QMainWindow):
 
         self.p4.label.setText(f"Para = {self.para}")
         self.p4.label_2.setText(f"/{kullaniciAdi}")
+        self.p4.label_5.setText(f"{self.carpan1*self.carpan2}x Carpan")
+        if self.stok1 > 0:
+            self.p4.pushButton.setText(f"{10-self.stok1}/10 - Güc \n>{self.fiyat1} Para<")
+        else:
+            self.p4.pushButton.setText(f"{10-self.stok1}/10 - Güc \n>FULL<")
+
+        if self.stok2 > 0:
+            self.p4.pushButton_2.setText(f"{self.rebirth}/25 - Rebirth \n>{self.fiyat2} Para/10 Güc<")
+        else:
+            self.p4.pushButton_2.setText(f"{self.rebirth}/25 - Rebirth \n>FULL<")
+
+        self.p4.pushButton_3.setText(f"{self.prestige}/Sonsuz - Prestige \n>{self.fiyat3} Para/10 Güc/25 Rebirth<")
 
     def buton(self):
-        self.close()
-        self.p = p()
-        self.p.show()
+        text, self.para, self.artis, self.fiyat1, self.stok1 = fonksiyonlar.guc(self.para, self.artis, self.fiyat1, self.stok1)
+        self.p4.label_6.setText(text)
+        self.p4.label.setText(f"Para = {self.para}")
+        if self.stok1 > 0:
+            self.p4.pushButton.setText(f"{10-self.stok1}/10 - Güc \n>{self.fiyat1} Para<")
+        else:
+            self.p4.pushButton.setText(f"{10-self.stok1}/10 - Güc \n>FULL<")
+
 
     def buton2(self):
-        self.close()
-        self.p = p()
-        self.p.show()
+        text, self.para, self.rebirth, self.artis, self.carpan1, self.fiyat1, self.fiyat2, self.stok1, self.stok2 = (
+            fonksiyonlar.rebirth(self.para, self.rebirth, self.artis, self.carpan1, self.fiyat1, self.fiyat2, self.stok1, self.stok2))
+        self.p4.label_6.setText(text)
+        self.p4.label.setText(f"Para = {self.para}")
+        if self.stok2 > 0:
+            self.p4.pushButton_2.setText(f"{self.rebirth}/25 - Rebirth \n>{self.fiyat2} Para/10 Güc<")
+        else:
+            self.p4.pushButton_2.setText(f"{self.rebirth}/25 - Rebirth \n>FULL<")
+
+        self.p4.label_5.setText(f"{self.carpan1*self.carpan2}x Carpan")
 
     def buton3(self):
-        self.close()
-        self.p = p()
-        self.p.show()
+        text, self.para, self.rebirth, self.prestige, self.artis, self.carpan1, self.carpan2, self.fiyat1, self.fiyat2, self.fiyat3, self.stok1, self.stok2 = (
+            fonksiyonlar.prestige(self.para, self.rebirth, self.prestige, self.artis, self.carpan1, self.carpan2, self.fiyat1, self.fiyat2, self.fiyat3, self.stok1, self.stok2))
+        self.p4.label_6.setText(text)
+        self.p4.label.setText(f"Para = {self.para}")
+        self.p4.pushButton_3.setText(f"{self.prestige}/Sonsuz - Prestige \n>{self.fiyat3} Para/10 Güc/25 Rebirth<")
+        self.p4.label_5.setText(f"{self.carpan1*self.carpan2}x Carpan")
 
     def geri(self):
         if self.p3:
